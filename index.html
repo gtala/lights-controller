@@ -1,19 +1,19 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lights Controller</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
     <link href="switch.css" rel="stylesheet">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-
-
     <script>
         $(document).ready(function() {
             var chkUno = $("#chkComUno");
@@ -23,8 +23,6 @@
             var imgUno = $("#imgUno");
             var imgDos = $("#imgDos");
             var imgTres = $("#imgTres");
-
-
 
             chkUno.change(function() {
                 pin(1, chkUno.is(":checked"), imgUno);
@@ -41,75 +39,120 @@
 
         function pin(led, estado, img) {
             var estadoStr = (estado) ? "on" : "off";
-            location.href = "http://181.166.178.60:80/pin" + led.toString() + estadoStr.toString() + "/";
 
-            if (estado) {
-                img.attr("src", "images/on.png");
+            var url = "https://181.166.178.60:80/pin" + led.toString() + estadoStr.toString() + "/";
+
+            if (isValidURL(url)) {
+
+                location.href = url;
+
+                if (estado) {
+                    img.attr("src", "images/on.png");
+                }
+                else {
+                    img.attr("src", "images/off.png");
+                }
             }
-            else
-            {
-                img.attr("src", "images/off.png");
-            }
+
+            return isValidURL;
+        }
+
+
+        function isValidURL(url) {
+            var isValid = false;
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                timeout: 1000,
+                async: false,
+                success: function(response, status, xhr) {
+                    alert("ok");
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("No hubo respuesta");
+                }
+            });
+
+            return isValid;
         }
     </script>
+
 </head>
 
 <body>
-    <div class="jumbotron">
-        <div class="row vcenter">
-            <div class="col-md-12 text-center">
-                <h1>Lights Controller</h1>
+    <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="sr-only">Lights Controller</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+                <a class="navbar-brand" href="#">Lights Controller</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="https://lights-controller.herokuapp.com/" target="_blank">Inicio</a></li>
+                    <li><a href="" target="_blank">A cerca de</a></li>
+                    <li><a href="" target="_blank">Contacto</a></li>
+                </ul>
             </div>
         </div>
-        <div class="row ">
-            <div class="col-md-3 vcenter">
-                <h3>Luz comedor 1</h3>
-            </div>
-            <div class="col-md-1 vcenter">
-                <label class="switch">
+    </nav>
+    <hr>
+    <hr>
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <p>Living 1</p>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-lg-2"><label class="switch">
                 <input type="checkbox" id="chkComUno">
                 <div class="slider round"></div>
-            </label>
+            </label> </div>
+                <div class="col-xs-4 col-sm-6 col-lg-8">
+                    <img id="imgUno" src="images/off.png" style="width:40px; heigth:40px"></img>
+                </div>
             </div>
-            <div class="col-md-1 vcenter">
-                <img id="imgUno" src="images/on.png" style="width:40px; heigth:40px"></img>
-            </div>
-            <div class="col-md-7">
-
-            </div>
-        </div>
-        <div class="row ">
-            <div class="col-md-3">
-                <h3>Luz comedor 2</h3>
-            </div>
-            <div class="col-md-1">
-                <label class="switch">
+            <div class="row ">
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <p>Living 2</p>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <label class="switch">
                 <input type="checkbox" id="chkComDos">
                 <div class="slider round"></div>
             </label>
+                </div>
+                <div class="col-xs-4 col-sm-6 col-lg-8">
+                    <img id="imgDos" src="images/off.png" style="width:40px; heigth:40px"></img>
+                </div>
             </div>
-            <div class="col-md-1">
-                <img id="imgDos" src="images/on.png" style="width:40px; heigth:40px"></img>
-            </div>
-            <div class="col-md-7">
-
-            </div>
-        </div>
-        <div class="row ">
-            <div class="col-md-3">
-                <h3>Luz balcón</h3>
-            </div>
-            <div class="col-md-1">
-                <label class="switch">
+            <div class="row ">
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <p>Balcón</p>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <label class="switch">
                 <input type="checkbox" id="chkComTres">
                 <div class="slider round"></div>
             </label>
+                </div>
+                <div class="col-xs-4 col-sm-6 col-lg-8">
+                    <img id="imgTres" src="images/off.png" style="width:40px; heigth:40px"></img>
+                </div>
             </div>
-            <div class="col-md-1">
-                <img id="imgTres" src="images/on.png" style="width:40px; heigth:40px"></img>
-            </div>
-            <div class="col-md-7">
-
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <footer>
+                    <p>© Copyright 2017 Guillermo Tala</p>
+                </footer>
             </div>
         </div>
     </div>
