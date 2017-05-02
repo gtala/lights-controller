@@ -39,42 +39,17 @@
 
         function pin(led, estado, img) {
             var estadoStr = (estado) ? "on" : "off";
-
+            var nombreImagen = (estado) ? "on" : "off";
+            
             var url = "https://181.166.178.60:80/pin" + led.toString() + estadoStr.toString() + "/";
-
-            if (isValidURL(url)) {
-
-                location.href = url;
-
-                if (estado) {
-                    img.attr("src", "images/on.png");
-                }
-                else {
-                    img.attr("src", "images/off.png");
-                }
-            }
-
-            return isValidURL;
-        }
-
-
-        function isValidURL(url) {
-            var isValid = false;
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                timeout: 1000,
-                async: false,
-                success: function(response, status, xhr) {
-                    alert("ok");
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert("No hubo respuesta");
-                }
-            });
-
-            return isValid;
+        
+            location.href = url;
+            img.attr("src", "images/" + nombreImagen + ".png");
+            
+            setTimeout(function() { 
+                alert("No hubo respuesta del servidor");
+                window.location= window.location; 
+            }, 5000);
         }
     </script>
 
